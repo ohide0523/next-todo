@@ -10,15 +10,14 @@ export default function Home() {
       <Link href="/todos/create">
         <button>ToDo作成へ</button>
       </Link>
-      <Link href="/todos/id">
-        <button>ToDo詳細へ</button>
-      </Link>
 
       <h2>あなたのToDo</h2>
       <ul>
         {todos.map((todo) => (
-          <li key={todo.id}>
+          <li key={todo.id} style={{cursor:"pointer"}}>
+            <Link href="/todos/id">
             <h3>{todo.text}</h3>
+            </Link>
           </li>
         ))}
       </ul>

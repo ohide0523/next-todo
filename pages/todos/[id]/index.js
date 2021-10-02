@@ -13,7 +13,10 @@ export default function Home() {
         {todos.map((todo) => (
           <li key={todo.id}>
             <h3>{todo.text}</h3>
-            <button onClick={() => onClickDelete(todo.id)}>削除</button>
+            <Link href="/todos">
+              <button onClick={() => onClickDelete(todo.id)}>削除</button>
+            </Link>
+
             <Link href="/todos/[id]/edit">
               <button onClick={() => sendEditId(todo.id)}>編集</button>
             </Link>
