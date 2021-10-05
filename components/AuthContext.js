@@ -6,11 +6,13 @@ export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [term, setTerm] = useState("");
+  const [termContent, setTermContent] = useState("");
   const [todos, setTodos] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
 
   const [editTerm, setEditTerm] = useState("");
+  const [editTermContent, setEditTermContent] = useState("");
   const [editId, setEditId] = useState(null);
 
   useEffect(() => {
@@ -38,7 +40,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const onClickAdd = async () => {
-    await Store.addTodo(term, currentUser.uid);
+    await Store.addTodo(term, currentUser.uid, termContent);
     await setTerm("");
     fetch();
   };
@@ -54,13 +56,20 @@ const AuthProvider = ({ children }) => {
   };
 
   const onClickUpdate = async () => {
-    if (editTerm === "") {Ï
+    if (editTerm === "") {
+      Ï;
       alert("文字を入力してください");
     } else {
-      await Store.updateTodo(editTerm, editId);
+      await Store.updateTodo(editTerm, editId, editTermContent);
       await fetch();
       setEditTerm("");
     }
+  };
+
+  const checkHandle = async (id) => {
+    await Store.toggleComp(id);
+    await fetch();
+    console.log("comp");
   };
 
   const fetch = async () => {
@@ -69,23 +78,38 @@ const AuthProvider = ({ children }) => {
       await setTodos(data);
     }
   };
+
+  const fetch2 = async () => {
+    if (currentUser) {
+      const data = await Store.getSortData(currentUser.uid);
+      await setTodos(data);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
         term,
         setTerm,
+        termContent,
+        setTermContent,
         todos,
         setTodos,
         currentUser,
         isLogin,
+        fetch,
+        fetch2,
         onClickLogin,
         onClickLogOut,
         onClickAdd,
         onClickDelete,
         sendEditId,
         onClickUpdate,
+        checkHandle,
         editTerm,
         setEditTerm,
+        editTermContent,
+        setEditTermContent,
       }}
     >
       {children}
